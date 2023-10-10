@@ -18,12 +18,11 @@ export class AddTodoComponent implements OnInit {
   onSubmit(){
     const todo = {
       sno: 8,
-      title: this.title,
+      title: this.title.toUpperCase(),
       desc: this.desc,
       active: true
     }
     this.todoAdd.emit(todo);
-
   }
 
 }
