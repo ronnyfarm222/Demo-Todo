@@ -16,13 +16,7 @@ import { Naukri, WEB_SCRAPPING } from '../../constants/global.consts';
 const candidateService = new CandidateService();
 
 export default class CandidateController
-  implements CandidateControllerInterface
-{
-  public setCandidate: CandidateControllerInterface['setCandidate'] = async (
-    req: Request,
-    res: Response,
-    _next: NextFunction
-  ) => {
+  public async setCandidate(req: Request, res: Response, _next: NextFunction): Promise<any> {
     try {
       let { candidate } = req.body;
       const interviewStatusService = new InterviewStatusService();
@@ -88,8 +82,7 @@ export default class CandidateController
     }
   };
 
-  public setCandidateFromScrapping: CandidateControllerInterface['setCandidate'] =
-    async (req: Request, res: Response, _next: NextFunction) => {
+  public async setCandidateFromScrapping(req: Request, res: Response, _next: NextFunction): Promise<any> {
       try {
         let candidate = req.body;
         const interviewStatusService = new InterviewStatusService();
@@ -127,14 +120,7 @@ export default class CandidateController
       }
     };
 
-  public getCandidate: CandidateControllerInterface['getCandidate'] = async (
-    req: Request,
-    res: Response,
-    _next: NextFunction
-  ) => {
-    try {
-      const { candidateId } = req.params;
-      const candidate = await candidateService.getCandidateById(
+  public async getCandidate(req: Request, res: Response, _next: NextFunction): Promise<any> {
         parseInt(candidateId)
       );
       if (candidate) {
@@ -146,14 +132,7 @@ export default class CandidateController
     }
   };
 
-  public getCandidates: CandidateControllerInterface['getCandidates'] = async (
-    req: Request,
-    res: Response,
-    _next: NextFunction
-  ) => {
-    try {
-      const candidates = await candidateService.getCandidates({});
-      const employeeIdToFilter = req.body.employeeId;
+  public async getCandidates(req: Request, res: Response, _next: NextFunction): Promise<any> {
 
       const userRole = res.locals.roles;
 
@@ -170,14 +149,7 @@ export default class CandidateController
     }
   };
 
-  public deleteCandidate: CandidateControllerInterface['deleteCandidate'] =
-    async (req: Request, res: Response, _next: NextFunction) => {
-      try {
-        const { candidateId } = req.params;
-        const deletedCandidate = await candidateService.deleteCandidate(
-          parseInt(candidateId)
-        );
-        logger.info(deletedCandidate);
+  public async deleteCandidate(req: Request, res: Response, _next: NextFunction): Promise<any> {
         if (deletedCandidate) {
           return success(
             res,
@@ -191,8 +163,7 @@ export default class CandidateController
       }
     };
 
-  public updateCandidate: CandidateControllerInterface['updateCandidate'] =
-    async (req: Request, res: Response, _next: NextFunction) => {
+  public async updateCandidate(req: Request, res: Response, _next: NextFunction): Promise<any> {
       try {
         const { candidateId } = req.params;
         const interviewStatusService = new InterviewStatusService();
@@ -273,8 +244,7 @@ export default class CandidateController
       }
     };
 
-  public updateCandidateStatus: CandidateControllerInterface['updateCandidate'] =
-    async (req: Request, res: Response, _next: NextFunction) => {
+  public async updateCandidateStatus(req: Request, res: Response, _next: NextFunction): Promise<any> {
       try {
         const { candidateId, screeningStatus } = req.params;
         const { rejectStatus, processData } = req.body;
@@ -343,11 +313,7 @@ export default class CandidateController
       }
     };
 
-  public getCandidatesByInterviews: CandidateControllerInterface['getCandidatesByInterviews'] =
-    async (req: Request, res: Response, _next: NextFunction) => {
-      try {
-        const candidates = await candidateService.getCandidatesByInterviews();
-        const employeeIdToFilter = req.body.employeeId;
+  public async getCandidatesByInterviews(req: Request, res: Response, _next: NextFunction): Promise<any> {
         const userRole = res.locals.roles;
         if (!userRole.includes('TA')) {
           const filteredCandidates: any = [];
@@ -371,11 +337,7 @@ export default class CandidateController
         _next(err);
       }
     };
-  public getCandidatesForInterview: CandidateControllerInterface['getCandidatesForInterview'] =
-    async (req: Request, res: Response, _next: NextFunction) => {
-      try {
-        const _candidates = await candidateService.getCandidatesForInterview();
-        const candidates = _candidates.filter((ele: any) => {
+  public async getCandidatesForInterview(req: Request, res: Response, _next: NextFunction): Promise<any> {
           return ele !== undefined;
         });
         return success(res, candidates, 'Operation is Successful');
